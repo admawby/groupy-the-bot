@@ -1,0 +1,109 @@
+# Translations template for PROJECT.
+# Copyright (C) 2009 Takashi Matsuo
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
+"POT-Creation-Date: 2009-06-25 08:47+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.4\n"
+
+#: groupy/forms.py:17
+msgid "Input mail addresses(wave account) separated by new lines."
+msgstr ""
+
+#: groupy/forms.py:19 groupy/forms.py:33
+msgid "Input the name of the group."
+msgstr ""
+
+#: groupy/forms.py:20 groupy/forms.py:37
+msgid "This description helps people to know this group better."
+msgstr ""
+
+#: groupy/forms.py:32
+msgid "Input mail addresses separated by new lines."
+msgstr ""
+
+#: groupy/forms.py:34
+msgid "People who want to join this group."
+msgstr ""
+
+#: groupy/forms.py:35
+msgid "People who are banned from this group"
+msgstr ""
+
+#: groupy/models.py:18 groupy/templates/edit_group.html:15
+msgid "group name"
+msgstr ""
+
+#: groupy/models.py:19
+msgid "description"
+msgstr ""
+
+#: groupy/models.py:21
+msgid "members"
+msgstr ""
+
+#: groupy/models.py:22
+msgid "applications"
+msgstr ""
+
+#: groupy/models.py:23
+msgid "banned accounts"
+msgstr ""
+
+#: groupy/views.py:34
+msgid "You don't own any group yet."
+msgstr ""
+
+#: groupy/views.py:36
+msgid "The groups you own."
+msgstr ""
+
+#: groupy/views.py:49
+msgid "The details of the group"
+msgstr ""
+
+#: groupy/views.py:85
+msgid ""
+"Sorry, It can not be saved because a race condition happened. Please try "
+"again from the start."
+msgstr ""
+
+#: groupy/views.py:91
+msgid "Editing a group"
+msgstr ""
+
+#: groupy/views.py:116
+msgid "Adding a new group"
+msgstr ""
+
+#: groupy/templates/base.html:11
+msgid "Top"
+msgstr ""
+
+#: groupy/templates/base.html:13
+msgid "Add a new group"
+msgstr ""
+
+#: groupy/templates/group_detail.html:7
+msgid "Group name:"
+msgstr ""
+
+#: groupy/templates/group_detail.html:9
+msgid "[Edit]"
+msgstr ""
+
+#: groupy/templates/group_detail.html:12
+msgid "Group description:"
+msgstr ""
+

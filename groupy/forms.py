@@ -14,7 +14,8 @@ class AddGroupForm(ModelForm):
     model = Group
     exclude = ("owner", "applications", "banned_addresses", "updated",
                "created")
-    help_texts = {"members": _("Input mail addresses separated by new lines."),
+    help_texts = {"members": _("Input mail addresses(wave account) separated "
+                               "by new lines."),
                   "name": _("Input the name of the group."),
                   "description": _("This description helps people to know "
                                    "this group better.")}

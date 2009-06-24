@@ -1,0 +1,111 @@
+# Japanese translations for .
+# Copyright (C) 2009 Takashi Matsuo
+# This file is distributed under the same license as the  project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version:  Groupy-the-bot-0.1\n"
+"Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
+"POT-Creation-Date: 2009-06-25 08:16+0900\n"
+"PO-Revision-Date: 2009-06-25 08:48+0900\n"
+"Last-Translator: Takashi Matsuo <tmatsuo@candit.jp>\n"
+"Language-Team: ja <tmatsuo@candit.jp>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.4\n"
+
+#: groupy/forms.py:17
+msgid "Input mail addresses(wave account) separated by new lines."
+msgstr "メールアドレス(waveのアカウント)を一行にひとつずつ入力してください。"
+
+#: groupy/forms.py:19 groupy/forms.py:33
+msgid "Input the name of the group."
+msgstr "グループの名前を入力してください。"
+
+#: groupy/forms.py:20 groupy/forms.py:37
+msgid "This description helps people to know this group better."
+msgstr "グループの説明を入力してください。"
+
+#: groupy/forms.py:32
+msgid "Input mail addresses separated by new lines."
+msgstr "メールアドレスを一行にひとつずつ入力してください。"
+
+#: groupy/forms.py:34
+msgid "People who want to join this group."
+msgstr "このグループに入りたい人達です。"
+
+#: groupy/forms.py:35
+msgid "People who are banned from this group"
+msgstr "このグループから bann されている人達です。"
+
+#: groupy/models.py:18 groupy/templates/edit_group.html:15
+msgid "group name"
+msgstr "グループ名"
+
+#: groupy/models.py:19
+msgid "description"
+msgstr "説明"
+
+#: groupy/models.py:21
+msgid "members"
+msgstr "メンバー"
+
+#: groupy/models.py:22
+msgid "applications"
+msgstr "入会希望者"
+
+#: groupy/models.py:23
+msgid "banned accounts"
+msgstr "bann されたアカウント"
+
+#: groupy/views.py:34
+msgid "You don't own any group yet."
+msgstr "あなたはまだグループを作成していません。"
+
+#: groupy/views.py:36
+msgid "The groups you own."
+msgstr "あなたが所有するグループです。"
+
+#: groupy/views.py:49
+msgid "The details of the group"
+msgstr "グループの詳細"
+
+#: groupy/views.py:85
+msgid ""
+"Sorry, It can not be saved because a race condition happened. Please try "
+"again from the start."
+msgstr ""
+"済みません。競合が起きたのであなたのした編集はセーブされませんでした。\n"
+"もう一度はじめからお願いします。"
+
+#: groupy/views.py:91
+msgid "Editing a group"
+msgstr "グループの編集"
+
+#: groupy/views.py:116
+msgid "Adding a new group"
+msgstr "グループの追加"
+
+#: groupy/templates/base.html:11
+msgid "Top"
+msgstr "トップへ"
+
+#: groupy/templates/base.html:13
+msgid "Add a new group"
+msgstr "グループを追加"
+
+#: groupy/templates/group_detail.html:7
+msgid "Group name:"
+msgstr "グループ名:"
+
+#: groupy/templates/group_detail.html:9
+msgid "[Edit]"
+msgstr "[編集]"
+
+#: groupy/templates/group_detail.html:12
+msgid "Group description:"
+msgstr "グループの説明:"
+
