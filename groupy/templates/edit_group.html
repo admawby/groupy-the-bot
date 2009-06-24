@@ -1,0 +1,40 @@
+{% extends "groupy/base.html" %}
+{% block title %}
+<title>{{ message }} - groupy</title>
+{% endblock title %}
+{% block main %}
+<h2>{{ message }}</h2>
+{% call form() %}
+  <table>
+  {% if group %}
+  <tr>
+    <td style="vertical-align: top; font-weight: bold;">
+      {{ _("group name") }}:
+    </td>
+    <td>{{ group.name }}</td>
+  </tr>
+  {% endif %}
+  {% for field in form %}
+    <tr>
+      <td style="vertical-align: top; font-weight: bold;">
+	{% if field.label %}{{ field.label()|safe }}:{% endif %}
+      </td>
+      <td>
+	{{ field.render()|safe }}
+      </td>
+      <td style="vertical-align: top;">
+	{% if field.help_text %}
+	  {{field.help_text }}
+	{% endif %}
+	{% if field.errors %}
+	  {% for error in field.errors %}
+	    {{ error }}
+	  {% endfor %}
+	{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </table>
+  {{ form.default_actions()|safe }}
+{% endcall %}
+{% endblock main %}

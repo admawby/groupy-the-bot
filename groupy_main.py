@@ -7,7 +7,13 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 
+import kay
+kay.setup()
+
 from kay.misc import get_appid
+from kay.conf import settings
+
+from groupy.models import Group
 
 hostname = "%s.appspot.com" % get_appid()
 
@@ -19,16 +25,62 @@ class Command(object):
   def __call__(self, properties, context, user, **kwargs):
     return self.func(properties, context, user, **kwargs)
 
+
+def invite_people(properties, context, user, groupname=None):
+  blip = context.GetBlipById(properties['blipId'])
+  group = Group.get_by_key_name(Group.get_key_name(groupname))
+  text = ("You(%s) requested inviting people of the group: %s.\n"
+          % (user, groupname))
+  if group:
+    root_wavelet = context.GetRootWavelet()
+    current_participants = root_wavelet.GetParticipants()
+    for member in group.members:
+      if not member in current_participants:
+        root_wavelet.AddParticipant(member)
+    text += "Finished inviting all the people in the group: %s" % groupname
+  else:
+    text += "However, there is no such group! Sorry."
+  blip.CreateChild().GetDocument().SetText(text)
+
+
 def add_request(properties, context, user, groupname=None):
   blip = context.GetBlipById(properties['blipId'])
-  blip.CreateChild().GetDocument().SetText(
-    "You(%s) requested adding you to the group: %s." % (user, groupname))
+  group = Group.get_by_key_name(Group.get_key_name(groupname))
+  text = "You(%s) requested adding you to the group: %s.\n" % (user, groupname)
+  if group:
+    if user in group.members:
+      text += "You are already a member of the group: %s." % groupname
+    elif user in group.applications:
+      text += ("You have already applied to join the group: %s. "
+               "Please wait for a moment." % groupname)
+    elif user in group.banned_addresses:
+      text += "You are banned from the group: %s." % groupname
+    else:
+      from google.appengine.api import mail
+      from google.appengine.ext import db
+      body = "%s has requested joining the group: %s." % (user, groupname)
+      mail.send_mail(sender=settings.ADMINS[0][1],
+                     to=group.owner.email,
+                     subject="Join request from %s has come" % user,
+                     body=body)
+      def txn():
+        g = Group.get(group.key())
+        g.applications.append(user)
+        g.put()
+      db.run_in_transaction(txn)
+      text += "Request to join this group has been sent!"
+  else:
+    text += "However, there is no such group! Sorry."
+  blip.CreateChild().GetDocument().SetText(text)
 
 
 def group_list(properties, context, user, **kwargs):
   blip = context.GetBlipById(properties['blipId'])
-  blip.CreateChild().GetDocument().SetText("You(%s) requested listing groups."
-                                           % user)
+  groups = Group.all().fetch(1000)
+  text = "You(%s) requested listing groups.\n" % user
+  for group in groups:
+    text += "%s\n" % group.name
+  blip.CreateChild().GetDocument().SetText(text)
 
 
 def on_submitted(properties, context):
@@ -37,6 +89,9 @@ def on_submitted(properties, context):
   commands = []
   commands.append(Command("add", r"^add me to (?P<groupname>[\w\-_]+)$",
                           add_request))
+  commands.append(Command("invite",
+                          r"^invite people in (?P<groupname>[\w\-_]+)$",
+                          invite_people))
   commands.append(Command("list groups", r"^list groups$", group_list))
   blip = context.GetBlipById(properties['blipId'])
   user = blip.GetCreator()
@@ -57,7 +112,7 @@ def on_submitted(properties, context):
     pat = re.compile(command.pattern)
     m = pat.search(firstline)
     if m:
-      logging.debug(m.groupdict())
+      logging.debug("groupdict: %s" % str(m.groupdict()))
       command(properties, context, user, **m.groupdict())
       return
   blip.CreateChild().GetDocument().SetText(

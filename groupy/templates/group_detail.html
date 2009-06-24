@@ -1,0 +1,32 @@
+{% extends "groupy/base.html" %}
+{% block title %}
+<title>{{ message }}</title>
+{% endblock title %}
+{% block main %}
+<h2>{{ message }}</h2>
+{{ _("Group name:") }}&nbsp;{{ group.name }}
+<a href="{{ url_for('groupy/edit_group', key_name=group.key().name()) }}">
+{{ _("[Edit]") }}
+</a>
+<br/>
+{{ _("Group description:") }}<br/>
+{{ group.description|nl2br }}<br/>
+members:
+<ul>
+  {% for member in group.members %}
+  <li>{{member}}</li>
+  {% endfor %}
+</ul>
+applications:
+<ul>
+  {% for application in group.applications %}
+  <li>{{application}}</li>
+  {% endfor %}
+</ul>
+banned:
+<ul>
+  {% for banned in group.banned_addresses %}
+  <li>{{banned}}</li>
+  {% endfor %}
+</ul>
+{% endblock main %}

@@ -37,3 +37,5 @@ INSTALLED_APPS = (
 MIDDLEWARE_CLASSES = (
   'kay.auth.middleware.GoogleAuthenticationMiddleware',
 )
+
+AUTH_USER_MODEL = 'groupy.models.GroupyUser'
