@@ -39,7 +39,6 @@ handlers:
 
 - url: /media
   static_dir: media
-  login: required
   secure: optional
 
 - url: /_kay/.*
@@ -50,6 +49,9 @@ handlers:
   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
   login: admin
   secure: always
+
+- url: /_wave/.*
+  script: groupy_main.py
 
 - url: /.*
   script: kay/main.py

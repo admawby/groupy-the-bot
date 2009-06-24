@@ -5,6 +5,8 @@ syntax: glob
 *~
 *.mo
 kay
+waveapi
+*templates_compiled*
 
 syntax: regexp
 (.*/)?\#[^/]*\#$
