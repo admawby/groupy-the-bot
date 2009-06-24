@@ -25,6 +25,20 @@ class Command(object):
   def __call__(self, properties, context, user, **kwargs):
     return self.func(properties, context, user, **kwargs)
 
+def desc(properties, context, user, groupname=None):
+  blip = context.GetBlipById(properties['blipId'])
+  group = Group.get_by_key_name(Group.get_key_name(groupname))
+  text = ("You(%s) requested the description of the group: %s.\n"
+          % (user, groupname))
+  if group:
+    root_wavelet = context.GetRootWavelet()
+    text += "Here are the description of the group: %s\n" % groupname
+    text += "-------------------------------------------------\n"
+    text += group.description
+    text += "\n-------------------------------------------------\n"
+  else:
+    text += "However, there is no such group! Sorry."
+  blip.CreateChild().GetDocument().SetText(text)
 
 def invite_people(properties, context, user, groupname=None):
   blip = context.GetBlipById(properties['blipId'])
@@ -58,7 +72,10 @@ def add_request(properties, context, user, groupname=None):
     else:
       from google.appengine.api import mail
       from google.appengine.ext import db
-      body = "%s has requested joining the group: %s." % (user, groupname)
+      body = "%s has requested joining the group: %s.\n" % (user, groupname)
+      body += "You can moderate this request on following URL:\n"
+      body += "http://%s.appspot.com/edit_group?key_name=%s" \
+          % (get_appid(), group.key().name().replace(":", "%3A"))
       mail.send_mail(sender=settings.ADMINS[0][1],
                      to=group.owner.email,
                      subject="Join request from %s has come" % user,
@@ -83,6 +100,23 @@ def group_list(properties, context, user, **kwargs):
   blip.CreateChild().GetDocument().SetText(text)
 
 
+def help(properties, context, user, **kwargs):
+  blip = context.GetBlipById(properties['blipId'])
+  text = "You(%s) requested help.\n" % user
+  text += "Available commands:\n"
+  text += "-----------------------------------------------------\n"
+  text += "list groups\n"
+  text += "    list available groups\n\n"
+  text += "desc GROUPNAME\n"
+  text += "    display the description of specified group\n\n"
+  text += "add me to GROUPNAME\n"
+  text += "    send a request for joining to the specified group\n\n"
+  text += "invite people in GROUPNAME\n"
+  text += "    invite all the people in the specified group\n"
+  text += "-----------------------------------------------------\n"
+  blip.CreateChild().GetDocument().SetText(text)  
+
+
 def on_submitted(properties, context):
   """
   """
@@ -92,15 +126,19 @@ def on_submitted(properties, context):
   commands.append(Command("invite",
                           r"^invite people in (?P<groupname>[\w\-_]+)$",
                           invite_people))
+  commands.append(Command("desc", r"^desc (?P<groupname>[\w\-_]+)$",
+                          desc))
   commands.append(Command("list groups", r"^list groups$", group_list))
+  commands.append(Command("help", r"^[hH][eE][lL][pP]$", help))
   blip = context.GetBlipById(properties['blipId'])
   user = blip.GetCreator()
   contributors = blip.GetContributors()
   logging.debug("user: %s" % user)
   logging.debug("contributors: %s" % str(contributors))
   if not len(contributors) == 1:
-    blip.CreateChild().GetDocument().SetText(
-      "I'm confusing about who said that. Sorry.")
+    #blip.CreateChild().GetDocument().SetText(
+    #  "I'm confusing about who said that. Sorry.")
+    logging.debug("I'm confusing about who said that. Sorry.")
     return
   if not user == contributors.pop():
     blip.CreateChild().GetDocument().SetText(
@@ -115,8 +153,9 @@ def on_submitted(properties, context):
       logging.debug("groupdict: %s" % str(m.groupdict()))
       command(properties, context, user, **m.groupdict())
       return
-  blip.CreateChild().GetDocument().SetText(
-    "I don't understand what you're saying. Sorry.")
+  return
+  #blip.CreateChild().GetDocument().SetText(
+  #  "I don't understand what you're saying. Sorry.")
   
 
 def on_self_added(properties, context):

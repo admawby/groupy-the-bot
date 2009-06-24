@@ -28,7 +28,7 @@
 	{% endif %}
 	{% if field.errors %}
 	  {% for error in field.errors %}
-	    {{ error }}
+	    <span style="color: red;">{{ error }}</span>
 	  {% endfor %}
 	{% endif %}
       </td>
