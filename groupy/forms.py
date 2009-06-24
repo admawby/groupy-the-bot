@@ -24,6 +24,7 @@ class AddGroupForm(ModelForm):
 
 class EditGroupForm(ModelForm):
   hidden_key_name = forms.TextField(widget=forms.HiddenInput)
+  hidden_updated = forms.TextField(widget=forms.HiddenInput)
   class Meta:
     model = Group
     exclude = ("name", "owner", "updated", "created")

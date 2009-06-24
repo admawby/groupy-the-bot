@@ -48,35 +48,49 @@ def group_detail(request):
     return render_to_response("groupy/group_detail.html",
                               {"message": _("The details of the group"),
                                "group": group})
+
+def get_edit_form(group):
+  return EditGroupForm(instance=group,
+                       initial={'hidden_key_name': group.key().name(),
+                                'hidden_updated': str(group.updated)})
+  
 @login_required
 def edit_group(request):
+  error_message = None
   if request.method == "GET":
     key_name = request.values.get("key_name", None)
     group = Group.get_by_key_name(key_name)
     if not group.is_owned_by(request.user):
       raise Forbidden()
-    form = EditGroupForm(instance=group,
-                         initial={'hidden_key_name': group.key().name()})
+    form = get_edit_form(group)
+
   elif request.method == "POST":
     key_name = request.form.get("hidden_key_name", None)
     group = Group.get_by_key_name(key_name)
     if not group.is_owned_by(request.user):
       raise Forbidden()
-    form = EditGroupForm(instance=group,
-                         initial={'hidden_key_name': group.key().name()})
+    form = get_edit_form(group)
     if form.validate(request.form):
-      group.description = form["description"]
-      group.members = form["members"]
-      group.applications = form["applications"]
-      group.banned_addresses = form["banned_addresses"]
-      group.put()
-      return redirect(url_for('groupy/group_detail',
-                              key_name=group.key().name()))
+      if str(group.updated) == form["hidden_updated"]:
+        group.description = form["description"]
+        group.members = form["members"]
+        group.applications = form["applications"]
+        group.banned_addresses = form["banned_addresses"]
+        group.put()
+        return redirect(url_for('groupy/group_detail',
+                                key_name=group.key().name()))
+      else:
+        # re-init because of race condition
+        form = get_edit_form(group)
+        error_message = _("Sorry, It can not be saved because "
+                          "a race condition happened. "
+                          "Please try again from the start.")
     else:
-      logging.debug(form.errors)
+      pass
   return render_to_response("groupy/edit_group.html",
                             {"message": _("Editing a group"),
                              "form": form.as_widget(),
+                             "error_message": error_message,
                              "group": group})
 
 @login_required
