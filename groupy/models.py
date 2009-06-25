@@ -5,7 +5,11 @@ from google.appengine.ext import db
 from kay.auth.models import GoogleUser
 from kay.i18n import lazy_gettext as _
 
+import babel
+
 # Create your models here.
+
+languages = sorted(babel.localedata.load('en')['languages'].keys())
 
 class GroupyUser(GoogleUser):
   """
@@ -16,6 +20,8 @@ class GroupyUser(GoogleUser):
 class Group(db.Model):
   # key_name = name
   name = db.StringProperty(required=True, verbose_name=_("group name"))
+  language = db.StringProperty(verbose_name=_("language"), default="en",
+                               choices=languages)
   description = db.TextProperty(verbose_name=_("description"))
   owner = db.ReferenceProperty(GroupyUser, required=True)
   members = db.StringListProperty(verbose_name=_("members"))

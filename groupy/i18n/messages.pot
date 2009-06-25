@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: tmatsuo@candit.jp\n"
-"POT-Creation-Date: 2009-06-25 08:47+0900\n"
+"POT-Creation-Date: 2009-06-25 12:00+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,47 +17,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.4\n"
 
-#: groupy/forms.py:17
+#: groupy/forms.py:26
 msgid "Input mail addresses(wave account) separated by new lines."
 msgstr ""
 
-#: groupy/forms.py:19 groupy/forms.py:33
+#: groupy/forms.py:28 groupy/forms.py:51
 msgid "Input the name of the group."
 msgstr ""
 
-#: groupy/forms.py:20 groupy/forms.py:37
+#: groupy/forms.py:29 groupy/forms.py:52
+msgid "Main language of this group."
+msgstr ""
+
+#: groupy/forms.py:30 groupy/forms.py:56
 msgid "This description helps people to know this group better."
 msgstr ""
 
-#: groupy/forms.py:32
+#: groupy/forms.py:50
 msgid "Input mail addresses separated by new lines."
 msgstr ""
 
-#: groupy/forms.py:34
+#: groupy/forms.py:53
 msgid "People who want to join this group."
 msgstr ""
 
-#: groupy/forms.py:35
+#: groupy/forms.py:54
 msgid "People who are banned from this group"
 msgstr ""
 
-#: groupy/models.py:18 groupy/templates/edit_group.html:15
+#: groupy/models.py:22 groupy/templates/edit_group.html:15
 msgid "group name"
 msgstr ""
 
-#: groupy/models.py:19
+#: groupy/models.py:23
+msgid "language"
+msgstr ""
+
+#: groupy/models.py:25
 msgid "description"
 msgstr ""
 
-#: groupy/models.py:21
+#: groupy/models.py:27
 msgid "members"
 msgstr ""
 
-#: groupy/models.py:22
+#: groupy/models.py:28
 msgid "applications"
 msgstr ""
 
-#: groupy/models.py:23
+#: groupy/models.py:29
 msgid "banned accounts"
 msgstr ""
 

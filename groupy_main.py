@@ -32,7 +32,8 @@ def desc(properties, context, user, groupname=None):
           % (user, groupname))
   if group:
     root_wavelet = context.GetRootWavelet()
-    text += "Here are the description of the group: %s\n" % groupname
+    text += "Group name: %s\n" % groupname
+    text += "Main language: %s\n" % group.language
     text += "-------------------------------------------------\n"
     text += group.description
     text += "\n-------------------------------------------------\n"
@@ -92,11 +93,21 @@ def add_request(properties, context, user, groupname=None):
 
 
 def group_list(properties, context, user, **kwargs):
+  lang = kwargs.get("lang", None)
   blip = context.GetBlipById(properties['blipId'])
-  groups = Group.all().fetch(1000)
-  text = "You(%s) requested listing groups.\n" % user
+  query = Group.all()
+  text = "You(%s) requested listing groups" % user
+  if lang:
+    query.filter("language =", lang)
+    text += " in language '%s'.\n" % lang
+  else:
+    text += ".\n"
+  groups = query.fetch(1000)
   for group in groups:
-    text += "%s\n" % group.name
+    if lang:
+      text += "%s\n" % group.name
+    else:
+      text += "%s (%s)\n" % (group.name, group.language)
   blip.CreateChild().GetDocument().SetText(text)
 
 
@@ -105,8 +116,9 @@ def help(properties, context, user, **kwargs):
   text = "You(%s) requested help.\n" % user
   text += "Available commands:\n"
   text += "-----------------------------------------------------\n"
-  text += "list groups\n"
-  text += "    list available groups\n\n"
+  text += "list groups [lang]\n"
+  text += "    list available groups [in particlar language]\n"
+  text += "    e.g. 'list groups en' will give you the list of the groups in English.\n\n"
   text += "desc GROUPNAME\n"
   text += "    display the description of specified group\n\n"
   text += "add me to GROUPNAME\n"
@@ -128,7 +140,8 @@ def on_submitted(properties, context):
                           invite_people))
   commands.append(Command("desc", r"^desc (?P<groupname>[\w\-_]+)$",
                           desc))
-  commands.append(Command("list groups", r"^list groups$", group_list))
+  commands.append(Command("list groups", r"^list groups ?(?P<lang>[\w]+)?$",
+                          group_list))
   commands.append(Command("help", r"^[hH][eE][lL][pP]$", help))
   blip = context.GetBlipById(properties['blipId'])
   user = blip.GetCreator()
