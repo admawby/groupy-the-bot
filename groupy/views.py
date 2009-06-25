@@ -72,6 +72,7 @@ def edit_group(request):
     form = get_edit_form(group)
     if form.validate(request.form):
       if str(group.updated) == form["hidden_updated"]:
+        group.language = form["language"]
         group.description = form["description"]
         group.members = form["members"]
         group.applications = form["applications"]
@@ -101,6 +102,7 @@ def add_group(request):
       form['name']
       group = Group.get_or_insert(key_name=Group.get_key_name(form['name']),
                                   name=form['name'],
+                                  language=form['language'],
                                   description=unicode(form['description']),
                                   owner=request.user,
                                   members=form['members'])

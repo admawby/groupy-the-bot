@@ -14,8 +14,9 @@ name_pattern = re.compile(r'^[\w\-_]+$')
 def construct_lang_choices(data):
   choices = []
   choices.append(('', '-----'))
-  for key, val in data.iteritems():
-    choices.append((key, val))
+  for key in sorted(data.keys()):
+    val = data[key]
+    choices.append((key, '%s: %s' % (key, val)))
   return choices
 
 class I18nLanguageSelectMixin(object):
@@ -24,8 +25,7 @@ class I18nLanguageSelectMixin(object):
     from kay.utils import local
     import babel
     languages = local.app.active_translations.locale.languages
-    self.language.set_choices(construct_lang_choices(languages))
-
+    self.language.choices = construct_lang_choices(languages)
 
 class AddGroupForm(I18nLanguageSelectMixin, ModelForm):
   class Meta:
